@@ -4,93 +4,193 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Framing Contractor Demo</title>
+<title>Your business name</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
 }
 
-/* Hero */
+/* ===== HERO ===== */
 .hero {
-  background: url('https://images.unsplash.com/photo-1503387762-592deb58ef4e') center/cover;
-  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
-  padding: 100px 20px;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+              url("https://picsum.photos/1600/900?random=1");
+  background-size: cover;
+  background-position: center;
 }
 
 .hero h1 {
-  font-size: 36px;
+  font-size: 3rem;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 1s ease forwards;
 }
 
-.hero button {
+.hero p {
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.btn {
   margin-top: 20px;
   padding: 12px 25px;
-  border: none;
-  background: #f5a623;
+  background: yellow;
   color: black;
-  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* Section */
-.section {
-  padding: 50px 20px;
-  text-align: center;
+.btn:hover {
+  transform: scale(1.1);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-  gap: 15px;
+/* ===== SLIDER ===== */
+.slider {
+  overflow: hidden;
 }
 
-.grid img {
+.slides {
+  display: flex;
+  width: 300%;
+  animation: slide 12s infinite;
+}
+
+.slides img {
   width: 100%;
-  height: 150px;
+  height: 400px;
   object-fit: cover;
 }
 
-/* CTA */
-.cta {
-  background: #111;
-  color: white;
-  padding: 50px;
+/* 滑动动画 */
+@keyframes slide {
+  0%,30% { transform: translateX(0); }
+  35%,65% { transform: translateX(-100%); }
+  70%,100% { transform: translateX(-200%); }
+}
+
+/* ===== SECTION ===== */
+.section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+/* ===== CARDS ===== */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: #222;
+  margin: 15px;
+  padding: 20px;
+  width: 250px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* ===== 滚动动画 ===== */
+.hidden {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s ease;
+}
+
+/* ===== fade ===== */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 手机适配 */
+@media(max-width:768px){
+  .slides img {
+    height: 250px;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
-  <h1>Professional Framing Contractor</h1>
-  <p>Reliable | Fast | Quality Work</p>
-  <button onclick="alert('Contact us to get a quote')">Get a Quote</button>
+  <h1>Your business name</h1>
+  <p>Professional Framing Services in Saskatoon</p>
+  <button class="btn">Get a Quote</button>
 </div>
 
-<div class="section">
-  <h2>Our Services</h2>
-  <p>Residential framing, garages, basements, decks</p>
-</div>
-
-<div class="section">
-  <h2>Recent Projects</h2>
-  <div class="grid">
-    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e">
-    <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625">
-    <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471">
+<!-- 图片轮播 -->
+<div class="slider">
+  <div class="slides">
+    <img src="https://picsum.photos/1200/400?random=2">
+    <img src="https://picsum.photos/1200/400?random=3">
+    <img src="https://picsum.photos/1200/400?random=4">
   </div>
 </div>
 
+<!-- SERVICES -->
 <div class="section">
-  <h2>Why Choose Us</h2>
-  <p>✔ Fast turnaround<br>✔ Experienced crew<br>✔ Competitive pricing</p>
+  <h2 class="hidden">Our Services</h2>
+
+  <div class="cards">
+    <div class="card hidden">House Framing</div>
+    <div class="card hidden">Basement Framing</div>
+    <div class="card hidden">Garage Framing</div>
+  </div>
 </div>
 
-<div class="cta">
-  <h2>Get More Jobs From Builders</h2>
-  <p>This is what your website could look like</p>
+<!-- ABOUT -->
+<div class="section">
+  <h2 class="hidden">Why Choose Us</h2>
+  <p class="hidden">Fast, Reliable, Professional Work.</p>
 </div>
+
+<!-- CONTACT -->
+<div class="section">
+  <h2 class="hidden">Contact Us</h2>
+  <button class="btn hidden">Call Now</button>
+</div>
+
+<script>
+// 滚动动画（加延迟确保加载）
+setTimeout(() => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  });
+
+  document.querySelectorAll(".hidden").forEach(el => {
+    observer.observe(el);
+  });
+}, 200);
+</script>
 
 </body>
 </html>
